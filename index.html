@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Inmobiliaria | Propiedades Exclusivas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES DE DISEÑO (Negro Sofisticado & Rojo Quemado) --- */
+        :root {
+            --bg-dark: #0F0E0F;        /* Negro grafito principal */
+            --bg-panel: rgba(22, 20, 22, 0.85); /* Contenedores oscuros elegantes */
+            --red-accent: #9E1B2F;     /* Rojo vino elegante (no extravagante) */
+            --red-hover: #BF263D;      /* Rojo un poco más vivo para interactividad */
+            --text-light: #F5F5F5;
+            --text-muted: #A09E9F;
+            --border-color: rgba(158, 27, 47, 0.15);
+            --font-main: 'Montserrat', sans-serif;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* --- ESTILOS GLOBALES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: var(--font-main);
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- CANVAS DE PARTÍCULAS SUTILES --- */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- HEADER / NAVEGACIÓN --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(15, 14, 15, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--red-accent);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            margin-left: 2rem;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--red-accent);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 8rem 5% 4rem 5%;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .hero h1 span {
+            color: var(--red-accent);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        /* --- BUSCADOR INMOBILIARIO (FILTROS) --- */
+        .search-container {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            max-width: 1000px;
+            margin: 0 auto 6rem auto;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            align-items: flex-end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .form-group label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-group select, .form-group input {
+            background-color: #1a181a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.8rem;
+            color: var(--text-light);
+            font-family: var(--font-main);
+            border-radius: 4px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group select:focus, .form-group input:focus {
+            border-color: var(--red-accent);
+        }
+
+        /* --- SECCIONES GENERALES --- */
+        .section-container {
+            padding: 4rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .section-title span {
+            color: var(--red-accent);
+        }
+
+        /* --- CUADRÍCULA DE PROPIEDADES (CARDS) --- */
+        .grid-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .property-card {
+            background-color: var(--bg-panel);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(158, 27, 47, 0.3);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 240px;
+            background: linear-gradient(135deg, #242124 0%, #171517 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            position: relative;
+        }
+
+        /* Badge de "Venta" o "Arriendo" */
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background-color: var(--red-accent);
+            color: white;
+            padding: 0.4rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+
+        .property-content {
+            padding: 1.8rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .property-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-location {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Características (Metros, Baños, Habitaciones) */
+        .property-features {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* --- BOTONES PREMIUM --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--red-accent);
+            color: var(--text-light);
+            border: none;
+            padding: 0.9rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: var(--transition);
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--red-hover);
+            box-shadow: 0 0 15px rgba(158, 27, 47, 0.4);
+        }
+
+        .btn-search {
+            width: 100%;
+            padding: 0.85rem;
+        }
+
+        /* --- SECCIÓN CONTACTO / CAPTACIÓN --- */
+        .contact-section {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 3rem;
+            max-width: 700px;
+            margin: 4rem auto;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-section p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .contact-form input, .contact-form textarea {
+            background-color: #1a181a;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.9rem;
+            color: var(--text-light);
+            font-family: var(--font-main);
+            border-radius: 4px;
+            outline: none;
+            width: 100%;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            height: 120px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            border-top: 1px solid var(--border-color);
+            background-color: #080708;
+            padding: 3rem 5% 2rem 5%;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* --- RESPONSIVO --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            header nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <header>
+        <a href="#" class="logo">PRIMATE<span>INMOBILIARIA</span></a>
+        <nav>
+            <a href="#propiedades">Propiedades</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Encuentra tu próximo <span>espacio exclusivo</span></h1>
+        <p>Conectamos propiedades de alto nivel con personas que buscan un estilo de vida extraordinario.</p>
+        
+        <div class="search-container">
+            <div class="search-form">
+                <div class="form-group">
+                    <label>Tipo de Inmueble</label>
+                    <select>
+                        <option>Apartamento</option>
+                        <option>Casa Campestre</option>
+                        <option>Penthouse</option>
+                        <option>Oficina</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Ubicación</label>
+                    <select>
+                        <option>El Poblado</option>
+                        <option>Envigado</option>
+                        <option>Laurales</option>
+                        <option>Llanogrande</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Presupuesto Máximo</label>
+                    <input type="text" placeholder="Ej: $500.000.000">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-search">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="propiedades">
+        <h2 class="section-title">Propiedades <span>Destacadas</span></h2>
+        
+        <div class="grid-properties">
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-badge">Venta</span>
+                    <span>[ Render / Foto de Propiedad ]</span>
+                </div>
+                <div class="property-content">
+                    <div>
+                        <div class="property-price">$1.250.000.000</div>
+                        <h3 class="property-title">Penthouse Minimalista</h3>
+                        <p class="property-location">El Poblado, Medellín</p>
+                    </div>
+                    <div>
+                        <div class="property-features">
+                            <span>3 Hab</span>
+                            <span>4 Baños</span>
+                            <span>180 m²</span>
+                        </div>
+                        <button class="btn">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-badge">Arriendo</span>
+                    <span>[ Render / Foto de Propiedad ]</span>
+                </div>
+                <div class="property-content">
+                    <div>
+                        <div class="property-price">$4.500.000 / mes</div>
+                        <h3 class="property-title">Apartamento Loft Moderno</h3>
+                        <p class="property-location">Laureles, Medellín</p>
+                    </div>
+                    <div>
+                        <div class="property-features">
+                            <span>1 Hab</span>
+                            <span>2 Baños</span>
+                            <span>85 m²</span>
+                        </div>
+                        <button class="btn">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card">
+                <div class="property-image">
+                    <span class="property-badge">Venta</span>
+                    <span>[ Render / Foto de Propiedad ]</span>
+                </div>
+                <div class="property-content">
+                    <div>
+                        <div class="property-price">$2.400.000.000</div>
+                        <h3 class="property-title">Casa de Lujo Inteligente</h3>
+                        <p class="property-location">Llanogrande, Rionegro</p>
+                    </div>
+                    <div>
+                        <div class="property-features">
+                            <span>4 Hab</span>
+                            <span>5 Baños</span>
+                            <span>320 m²</span>
+                        </div>
+                        <button class="btn">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-container" id="contacto">
+        <div class="contact-section">
+            <h2>¿Quieres vender o buscar una propiedad?</h2>
+            <p>Déjanos tus datos y un asesor experto se pondrá en contacto contigo en menos de 24 horas.</p>
+            
+            <form class="contact-form" onsubmit="event.preventDefault();">
+                <input type="text" placeholder="Nombre Completo" required>
+                <input type="email" placeholder="Correo Electrónico" required>
+                <input type="tel" placeholder="Número de Teléfono" required>
+                <textarea placeholder="Cuéntanos un poco sobre lo que estás buscando..."></textarea>
+                <button type="submit" class="btn">Enviar Solicitud</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Primate Inmobiliaria. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let particlesArray = [];
+        const maxParticles = 45; // Cantidad controlada para no sobrecargar el diseño visual
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1; // Puntos pequeños
+                this.speedX = (Math.random() * 0.3) - 0.15;
+                this.speedY = (Math.random() * 0.3) - 0.15;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x > canvas.width || this.x < 0) this.speedX = -this.speedX;
+                if (this.y > canvas.height || this.y < 0) this.speedY = -this.speedY;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(158, 27, 47, 0.25)'; // Rojo muy sutil
+                ctx.fill();
+            }
+        }
+
+        // Dibuja líneas suaves uniendo los nodos cercanos (Efecto de red corporativa)
+        function drawLines() {
+            for (let i = 0; i < particlesArray.length; i++) {
+                for (let j = i; j < particlesArray.length; j++) {
+                    let dx = particlesArray[i].x - particlesArray[j].x;
+                    let dy = particlesArray[i].y - particlesArray[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(158, 27, 47, ${0.15 - (distance / 120) * 0.15})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function init() {
+            particlesArray = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            drawLines();
+            requestAnimationFrame(animate);
+        }
+
+        init();
+        animate();
+    </script>
+
+</body>
+</html>
